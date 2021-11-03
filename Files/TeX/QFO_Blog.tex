@@ -1,0 +1,1876 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{QFO\_Blog}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{from-quantatitive-to-quantum-finance}{%
+\section{From Quantatitive to Quantum
+Finance}\label{from-quantatitive-to-quantum-finance}}
+
+If you follow Quantum Computing news you may have noticed a strange new
+player in the world of Quantum Research: the world's largest financial
+institutions. J.P. Morgan, Wells Fargo, Barclays, Citigroup, Goldman
+Sachs, and others are all currently pursuing quantum capabilities.
+According to the
+\href{https://www.bcg.com/publications/2020/how-financial-institutions-can-utilize-quantum-computing}{Boston
+Consulting Group}, Quantum Computing could add ``up to almost \$70
+billion in additional operating income for banks and other
+financial-services companies as the technology matures over the next
+several decades.'' But what exactly do these banks want with a Quantum
+Computer - even as the technology is just barely emerging from academic
+labs? To answer these questions, we are first going to begin with a
+pivotal moment in wealth management, the advent of Quantitative Finance.
+
+Although stock and options trading began as early as the 17th century,
+the story of Quantitative Finance did not emerge until the 1900s to
+emerge. Mathematician Louis de Bachelier (1900) is credited with being
+the first to introduce the idea of using Brownian Motion to model asset
+pricing, an idea that would go on to form the foundations of modern
+Quantative Finance, albeit 70 years after its largely ignored invention.
+Despite the burial of Bachelier's work, other mathematicians,
+statisticians, physicists, and economists continued to revolutionize the
+field of finance. Our next stop is in 1953: economist and Nobel-laureate
+Harry Markowitz's development of Modern Portfolio Theory (MPT).
+Markowitz was unique in his approach of using statistical measures in
+order to maximize portfolio diversification. MPT was so revolutionary in
+the field of finance that renowned economist Milton Friedman notoriously
+joked that MPT was not economic theory at all but an entirely new field
+- Markowitz Portfolio Optimization represented a new era for finance.
+
+Even better, Markotwitz Portfolio Optimization is not terribly
+complicated:
+
+\begin{verbatim}
+A key component of MPT is diversification. Most investments are either high risk and high return or low risk and low return MPT creates an optimal mix of the two options by taking into account the investor's personal tolerance for risk
+
+Using MPT we can either set an acceptable risk level snf optimize portfolio returns, or set our epected returns and find the minumum risk portfolio possible associated with that return level.
+\end{verbatim}
+
+    \hypertarget{markowitz-model}{%
+\subsection{Markowitz Model}\label{markowitz-model}}
+
+\hypertarget{efficient-frontier-portfolio-optimisation-in-python}{%
+\subsubsection{Efficient Frontier Portfolio Optimisation in
+Python}\label{efficient-frontier-portfolio-optimisation-in-python}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}To begin we are going to import the base packages we will need to gather and manipulate stock data}
+
+\PY{c+c1}{\PYZsh{}!pip install pandas\PYZus{}datareader}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{ipywidgets} \PY{k}{as} \PY{n+nn}{widgets}
+\PY{k+kn}{import} \PY{n+nn}{pandas\PYZus{}datareader}\PY{n+nn}{.}\PY{n+nn}{data} \PY{k}{as} \PY{n+nn}{web}   \PY{c+c1}{\PYZsh{}Datareader allows us to pull real\PYZhy{}time stock data from online financial databses. Here we will use Yahoo}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Next we will test the Datareader by importing data Netflix's stock data.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{stocks\PYZus{}data.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{index\PYZus{}col}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{data}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                 AAPL        AMZN       GOOGL          FB
+Date
+2016-01-04  24.286827  636.989990  759.440002  102.220001
+2016-01-05  23.678221  633.789978  761.530029  102.730003
+2016-01-06  23.214842  632.650024  759.330017  102.970001
+2016-01-07  22.235075  607.940002  741.000000   97.919998
+2016-01-08  22.352644  607.049988  730.909973   97.330002
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Pull quote info for Netflix\PYZsq{}s stock denoted by the symbol \PYZsq{}NFLX\PYZsq{}}
+\PY{n}{nflxQuote} \PY{o}{=} \PY{n}{web}\PY{o}{.}\PY{n}{DataReader}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{NFLX}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{data\PYZus{}source}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yahoo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{start}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2016\PYZhy{}01\PYZhy{}01}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                           \PY{n}{end}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2017\PYZhy{}12\PYZhy{}31}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{nflxQuote}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                  High         Low        Open       Close    Volume  \textbackslash{}
+Date
+2016-01-04  110.000000  105.209999  109.000000  109.959999  20794800
+2016-01-05  110.580002  105.849998  110.449997  107.660004  17664600
+2016-01-06  117.910004  104.959999  105.290001  117.680000  33045700
+2016-01-07  122.180000  112.290001  116.360001  114.559998  33636700
+2016-01-08  117.720001  111.099998  116.330002  111.389999  18067100
+
+             Adj Close
+Date
+2016-01-04  109.959999
+2016-01-05  107.660004
+2016-01-06  117.680000
+2016-01-07  114.559998
+2016-01-08  111.389999
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Now we want the actual stock portfolio that we are going to optimize,
+since let's face it, we need more than one investment to optimize! We
+are going to use the same procedure as above to load in the stock data
+for Apple, Amazon, Google, and Facebook because if you are going to have
+a fake portfolio you might as well have fun with it.
+
+We plot both the change in stock price over time as well as the daily
+change or `Volatility' of each stock price. \emph{Notice how the prices
+of the stocks fluctate over time in unpredicatble ways}. This is the
+essence of the financial optimization problem: using pseudo-random
+variables to your advantage.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+CHALLENGE: How would you attempt to make sense of 4 data series that
+seem like a complete roll of the dice?
+
+The answer in the case of Markowitz Portfolio Optimization is to compare
+how each data series changes TOGETHER. For those with a background in
+statistics, we use the Covariance of our portfolio matrix
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{acceptable-risk}{%
+\subsubsection{Acceptable Risk}\label{acceptable-risk}}
+
+Markowitz Portfolio Theory assumes that investors are risk-averse,
+meaning they prefer a less risky portfolio to a riskier one for a given
+level of return; risk aversion implies that most people should invest in
+multiple asset classes.
+
+The expected return of the portfolio is calculated as a weighted sum of
+the returns of the individual assets. If a portfolio contained four
+equally weighted assets with expected returns of 2\%, 7\%, 10\%, and
+12\%, the portfolio's expected return would be:
+
+EV = (2\% x 25\%) + (7\% x 25\%) + (10\% x 25\%) + (12\% x 25\%) =
+7.75\%
+
+This is NOT the case for the risk of a portfolio.
+
+The portfolio's risk is a function of the \textbf{variances} of each
+asset and the \textbf{correlations} of each pair of assets. To calculate
+the risk of a four-asset portfolio, we need each of the four assets'
+variances and six correlation values, since there are six possible
+two-asset combinations with four assets. Because of the asset
+correlations, the total portfolio risk, or standard deviation, is lower
+than what would be calculated by a weighted sum.
+
+(If you are interested in learning more about the statistics used in
+this notebook I encourage you to read this
+\href{https://web.stanford.edu/class/archive/cs/cs109/cs109.1178/lectureHandouts/150-covariance.pdf}{article}
+from Stanford).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Set the stock symbols, data source, and time range}
+\PY{n}{stocks} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AAPL}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AMZN}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GOOGL}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{FB}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{numAssets} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{stocks}\PY{p}{)}
+\PY{n}{source} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yahoo}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{start} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2016\PYZhy{}01\PYZhy{}01}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{end} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{2017\PYZhy{}12\PYZhy{}31}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{data} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{\PYZsh{}Retrieve stock price data and save just the dividend adjusted closing prices}
+\PY{k}{for} \PY{n}{symbol} \PY{o+ow}{in} \PY{n}{stocks}\PY{p}{:}
+        \PY{n}{data}\PY{p}{[}\PY{n}{symbol}\PY{p}{]} \PY{o}{=} \PY{n}{web}\PY{o}{.}\PY{n}{DataReader}\PY{p}{(}\PY{n}{symbol}\PY{p}{,} \PY{n}{data\PYZus{}source}\PY{o}{=}\PY{n}{source}\PY{p}{,} \PY{n}{start}\PY{o}{=}\PY{n}{start}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{n}{end}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Adj Close}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{o}{.}\PY{n}{from\PYZus{}dict}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+\PY{n}{data}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                 AAPL        AMZN       GOOGL          FB
+Date
+2016-01-04  24.286827  636.989990  759.440002  102.220001
+2016-01-05  23.678217  633.789978  761.530029  102.730003
+2016-01-06  23.214846  632.650024  759.330017  102.970001
+2016-01-07  22.235069  607.940002  741.000000   97.919998
+2016-01-08  22.352644  607.049988  730.909973   97.330002
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Plotting the Daily Change of our portfolio}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Iterate over the price each of stock per day}
+\PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{data}\PY{o}{.}\PY{n}{columns}\PY{o}{.}\PY{n}{values}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{data}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{data}\PY{p}{[}\PY{n}{c}\PY{p}{]}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.8}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{n}{c}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Python will attempt to add an x\PYZhy{}tick for every data point}
+\PY{c+c1}{\PYZsh{}This leads to an undreadable x\PYZhy{}axis so we must trim down to every\PYZhy{}other data}
+\PY{n}{pos} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{o}{.}\PY{n}{index}\PY{p}{)}\PY{p}{)}
+\PY{n}{ticks} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n}{pos}\PY{p}{[}\PY{p}{:}\PY{p}{:}\PY{l+m+mi}{20}\PY{p}{]}\PY{p}{,} \PY{n}{data}\PY{o}{.}\PY{n}{index}\PY{p}{[}\PY{p}{:}\PY{p}{:}\PY{l+m+mi}{20}\PY{p}{]}\PY{p}{,} 
+                   \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{90}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}We add a legend and x\PYZhy{}y labels}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{p}{(}\PY{o}{.}\PY{l+m+mi}{05}\PY{p}{,}\PY{o}{.}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Price in \PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 0, 'Date')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Plotting the Volatility of our Portfolio}
+\PY{n}{returns} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{pct\PYZus{}change}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{returns}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{returns}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AAPL}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AAPL}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{returns}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{returns}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AMZN}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AMZN}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{returns}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{returns}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GOOGL}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GOOGL}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{returns}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{returns}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{FB}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{FB}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{lw}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{pos} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{returns}\PY{o}{.}\PY{n}{index}\PY{p}{)}\PY{p}{)}
+\PY{n}{ticks} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n}{pos}\PY{p}{[}\PY{p}{:}\PY{p}{:}\PY{l+m+mi}{20}\PY{p}{]}\PY{p}{,} \PY{n}{returns}\PY{o}{.}\PY{n}{index}\PY{p}{[}\PY{p}{:}\PY{p}{:}\PY{l+m+mi}{20}\PY{p}{]}\PY{p}{,}
+                   \PY{n}{rotation}\PY{o}{=}\PY{l+m+mi}{90}\PY{p}{)} 
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{upper right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{6}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Volatility}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Daily Returns (}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Date}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 0, 'Date')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    As discussed above, if we want to pin down the volatility above, we are
+going to need to analyze not just how each stock price changes, but how
+they all change together. You can think of this as reducing the degrees
+of freedom of our data. In order to convert from daily returns and
+covariance (which comes easily from the data above) we multiple by 250
+days since there are approximately 250 open trading days a year.
+
+Let's use this information to find all POSSIBLE stock portfolios
+combinations that contain our four chosen stocks. We plot these data
+points as `Expected Return' vs `Expected Volatility (Standard
+Deviation)' below.
+
+We will do this by randomly generating 50,000 portfolio weight/stock
+combinations using our 4 selected prices. Following the minutia of the
+code below is unimportant (most of it is staistics and data
+manipulation) what is important are the takeways from this exercise.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} calculate daily and annual returns of the stocks}
+\PY{n}{returns\PYZus{}daily} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{pct\PYZus{}change}\PY{p}{(}\PY{p}{)}
+\PY{n}{returns\PYZus{}annual} \PY{o}{=} \PY{n}{returns\PYZus{}daily}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)} \PY{o}{*} \PY{l+m+mi}{250}
+
+\PY{c+c1}{\PYZsh{} get daily and covariance of returns of the stock}
+\PY{n}{cov\PYZus{}daily} \PY{o}{=} \PY{n}{returns\PYZus{}daily}\PY{o}{.}\PY{n}{cov}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{cov\PYZus{}annual} \PY{o}{=} \PY{n}{cov\PYZus{}daily} \PY{o}{*} \PY{l+m+mi}{250}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Let\PYZsq{}s display the daily and annual covariance matrices.}
+\PY{c+c1}{\PYZsh{}We can do this quickly with the pd.concat command which will}
+\PY{c+c1}{\PYZsh{}Add one dataframe onto another}
+\PY{c+c1}{\PYZsh{}The Matrix to the right (AAAPL \PYZhy{}\PYZgt{} FB) is the daily}
+\PY{c+c1}{\PYZsh{}The Matrix to the left (AAAPL \PYZhy{}\PYZgt{} FB) is the annual}
+
+\PY{n}{cov\PYZus{}display} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{p}{[}\PY{n}{d}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{n}{drop}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)} \PY{k}{for} \PY{n}{d} \PY{o+ow}{in} \PY{p}{[}\PY{n}{cov\PYZus{}daily}\PY{p}{,} \PY{n}{cov\PYZus{}annual}\PY{p}{]}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{cov\PYZus{}display}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+       AAPL      AMZN     GOOGL        FB      AAPL      AMZN     GOOGL  \textbackslash{}
+0  0.000170  0.000086  0.000072  0.000079  0.042487  0.021559  0.017902
+1  0.000086  0.000256  0.000111  0.000142  0.021559  0.063983  0.027746
+2  0.000072  0.000111  0.000126  0.000108  0.017902  0.027746  0.031453
+3  0.000079  0.000142  0.000108  0.000216  0.019796  0.035575  0.026995
+
+         FB
+0  0.019796
+1  0.035575
+2  0.026995
+3  0.054110
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Randomly generating 50,000 stock/weight combinations}
+
+\PY{n}{port\PYZus{}returns} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{port\PYZus{}volatility} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{stock\PYZus{}weights} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} set the number of combinations for imaginary portfolios}
+\PY{n}{num\PYZus{}assets} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{stocks}\PY{p}{)}
+\PY{n}{num\PYZus{}portfolios} \PY{o}{=} \PY{l+m+mi}{50000}
+
+\PY{c+c1}{\PYZsh{} populate the empty lists with each portfolios returns,risk and weights}
+\PY{k}{for} \PY{n}{single\PYZus{}portfolio} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}portfolios}\PY{p}{)}\PY{p}{:}
+    \PY{n}{weights} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{n}{num\PYZus{}assets}\PY{p}{)}
+    \PY{n}{weights} \PY{o}{/}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{weights}\PY{p}{)}
+    \PY{n}{returns} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{weights}\PY{p}{,} \PY{n}{returns\PYZus{}annual}\PY{p}{)}
+    \PY{n}{volatility} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{weights}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{cov\PYZus{}annual}\PY{p}{,} \PY{n}{weights}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+    \PY{n}{port\PYZus{}returns}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{returns}\PY{p}{)}
+    \PY{n}{port\PYZus{}volatility}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{volatility}\PY{p}{)}
+    \PY{n}{stock\PYZus{}weights}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{weights}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} a dictionary for Returns and Risk values of each portfolio}
+\PY{n}{portfolio} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Returns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{port\PYZus{}returns}\PY{p}{,}
+             \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Volatility}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{port\PYZus{}volatility}\PY{p}{\PYZcb{}}
+
+\PY{c+c1}{\PYZsh{} extend original dictionary to accomodate each ticker and weight in the portfolio}
+\PY{k}{for} \PY{n}{counter}\PY{p}{,}\PY{n}{symbol} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{stocks}\PY{p}{)}\PY{p}{:}
+    \PY{n}{portfolio}\PY{p}{[}\PY{n}{symbol}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ Weight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{[}\PY{n}{weight}\PY{p}{[}\PY{n}{counter}\PY{p}{]} \PY{k}{for} \PY{n}{weight} \PY{o+ow}{in} \PY{n}{stock\PYZus{}weights}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} make a nice dataframe of the extended dictionary}
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{portfolio}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} get better labels for desired arrangement of columns}
+\PY{n}{column\PYZus{}order} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Returns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Volatility}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{+} \PY{p}{[}\PY{n}{stock}\PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ Weight}\PY{l+s+s1}{\PYZsq{}} \PY{k}{for} \PY{n}{stock} \PY{o+ow}{in} \PY{n}{stocks}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} reorder dataframe columns}
+\PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{n}{column\PYZus{}order}\PY{p}{]}
+
+\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+    Returns  Volatility  AAPL Weight  AMZN Weight  GOOGL Weight  FB Weight
+0  0.262623    0.169874     0.350596     0.093828      0.262638   0.292938
+1  0.282557    0.195178     0.074362     0.508460      0.271287   0.145891
+2  0.299127    0.202709     0.103383     0.580401      0.149038   0.167178
+3  0.299712    0.213160     0.015257     0.205003      0.048611   0.731129
+4  0.274922    0.183688     0.122503     0.281455      0.258362   0.337681
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Let's take a look at the graph: Remember, we want to \emph{maximize}
+Expected Returns while \emph{minimizing} Risk, in this case volatiliity.
+There is a clearly a subset of all possible portfolios that represent
+the upper limit of portfolio performance - we call this boundary the
+\textbf{Efficient Frontier}.
+
+\begin{verbatim}
+The Ffficient Frontier is the line that indicates the efficient set of portfolios that will provide the maximum expected returns for the lowest given level of risk.
+
+When a portfolio falls to the right of the efficient frontier, it possesses greater risk relative to its predicted return. When it falls beneath the slope of the efficient frontier, it offers a lower level of return relative to risk.
+\end{verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} plot the efficient frontier with a scatter plot}
+\PY{n}{plt}\PY{o}{.}\PY{n}{style}\PY{o}{.}\PY{n}{use}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{default}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{df}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Volatility}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Returns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,} \PY{l+m+mf}{4.5}\PY{p}{)}\PY{p}{,} \PY{n}{grid}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Expected Volatility (Std. Deviation)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Expected Returns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Efficient Frontier}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{annotate}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Efficient Frontier}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{xy}\PY{o}{=}\PY{p}{(}\PY{l+m+mf}{0.173}\PY{p}{,}\PY{l+m+mf}{0.29}\PY{p}{)}\PY{p}{,} \PY{n}{xytext}\PY{o}{=}\PY{p}{(}\PY{l+m+mf}{0.16}\PY{p}{,} \PY{l+m+mf}{0.325}\PY{p}{)}\PY{p}{,}
+             \PY{n}{arrowprops}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{facecolor}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{shrink}\PY{o}{=}\PY{l+m+mf}{0.05}\PY{p}{)}\PY{p}{,}
+             \PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Now that we understand the Efficient Frontier, it is finally time to
+find our maximized portfolios according to the Markowitz Optimization
+Model. We have done all of the hard work above by calculating the
+Covariance Matrix, Expected Returns, and Volatility above, therefore, we
+simply run our calculations, save the results, and use Panda's latent
+ability to locate extrema within a datafrane.
+
+The next step then is to define the parameter Panda's must optimize. It
+turns out that this metric is the \textbf{Sharpe Ratio} which describes
+the excess return you are receiving for the extra volatility you accept
+by holding a riskier asset.
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+Sharpe Ratio\$ = \frac{R_p-R_f}{\sigma_p}\$ \(\\\) \$R\_p = \$ Expected
+Portfolio Return, \$R\_f = \$ Risk Free Rate, \$\sigma\_p = \$ Portfolio
+Standard Deviation
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+The code below translates our calculations above into functions to carry
+out on all possible portfolio combinations and subsequently finds the
+portfolios that 1. Maximize the Sharpe Ratio 2. Minimize Volatility
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}generate our anual portfolio results and standard deviation}
+\PY{k}{def} \PY{n+nf}{portfolio\PYZus{}annualized\PYZus{}performance}\PY{p}{(}\PY{n}{weights}\PY{p}{,} \PY{n}{mean\PYZus{}returns}\PY{p}{,} \PY{n}{cov\PYZus{}matrix}\PY{p}{)}\PY{p}{:}
+    \PY{n}{returns} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{mean\PYZus{}returns}\PY{o}{*}\PY{n}{weights} \PY{p}{)} \PY{o}{*}\PY{l+m+mi}{250}
+    \PY{n}{std} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{weights}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n}{cov\PYZus{}matrix}\PY{p}{,} \PY{n}{weights}\PY{p}{)}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{250}\PY{p}{)}
+    \PY{k}{return} \PY{n}{std}\PY{p}{,} \PY{n}{returns}
+
+\PY{c+c1}{\PYZsh{}generate our random portfolios}
+\PY{k}{def} \PY{n+nf}{random\PYZus{}portfolios}\PY{p}{(}\PY{n}{num\PYZus{}portfolios}\PY{p}{,} \PY{n}{mean\PYZus{}returns}\PY{p}{,} \PY{n}{cov\PYZus{}matrix}\PY{p}{,} \PY{n}{risk\PYZus{}free\PYZus{}rate}\PY{p}{)}\PY{p}{:}
+    \PY{n}{results} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{n}{num\PYZus{}portfolios}\PY{p}{)}\PY{p}{)}
+    \PY{n}{weights\PYZus{}record} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}portfolios}\PY{p}{)}\PY{p}{:}
+        \PY{n}{weights} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}
+        \PY{n}{weights} \PY{o}{/}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{weights}\PY{p}{)}
+        \PY{n}{weights\PYZus{}record}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{weights}\PY{p}{)}
+        \PY{n}{portfolio\PYZus{}std\PYZus{}dev}\PY{p}{,} \PY{n}{portfolio\PYZus{}return} \PY{o}{=} \PY{n}{portfolio\PYZus{}annualized\PYZus{}performance}\PY{p}{(}\PY{n}{weights}\PY{p}{,} \PY{n}{mean\PYZus{}returns}\PY{p}{,} \PY{n}{cov\PYZus{}matrix}\PY{p}{)}
+        \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{portfolio\PYZus{}std\PYZus{}dev}
+        \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{portfolio\PYZus{}return}
+        \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{portfolio\PYZus{}return} \PY{o}{\PYZhy{}} \PY{n}{risk\PYZus{}free\PYZus{}rate}\PY{p}{)} \PY{o}{/} \PY{n}{portfolio\PYZus{}std\PYZus{}dev} \PY{c+c1}{\PYZsh{}Calculating the Sharpe Ratio in this Step}
+    \PY{k}{return} \PY{n}{results}\PY{p}{,} \PY{n}{weights\PYZus{}record}
+
+
+\PY{c+c1}{\PYZsh{}convert to percent change and average}
+\PY{n}{returns} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{pct\PYZus{}change}\PY{p}{(}\PY{p}{)}
+\PY{n}{mean\PYZus{}returns} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{cov\PYZus{}matrix} \PY{o}{=} \PY{n}{returns}\PY{o}{.}\PY{n}{cov}\PY{p}{(}\PY{p}{)}
+\PY{n}{num\PYZus{}portfolios} \PY{o}{=} \PY{l+m+mi}{25000}
+\PY{n}{risk\PYZus{}free\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.017}  \PY{c+c1}{\PYZsh{}the theoretical rate of return of an investment with zero risk.}
+
+
+
+\PY{c+c1}{\PYZsh{}Next we will define a function to aesthetically display our results below}
+\PY{k}{def} \PY{n+nf}{display\PYZus{}simulated\PYZus{}ef\PYZus{}with\PYZus{}random}\PY{p}{(}\PY{n}{mean\PYZus{}returns}\PY{p}{,} \PY{n}{cov\PYZus{}matrix}\PY{p}{,} \PY{n}{num\PYZus{}portfolios}\PY{p}{,} \PY{n}{risk\PYZus{}free\PYZus{}rate}\PY{p}{)}\PY{p}{:}
+    \PY{n}{results}\PY{p}{,} \PY{n}{weights} \PY{o}{=} \PY{n}{random\PYZus{}portfolios}\PY{p}{(}\PY{n}{num\PYZus{}portfolios}\PY{p}{,}\PY{n}{mean\PYZus{}returns}\PY{p}{,} \PY{n}{cov\PYZus{}matrix}\PY{p}{,} \PY{n}{risk\PYZus{}free\PYZus{}rate}\PY{p}{)}
+    
+    \PY{n}{max\PYZus{}sharpe\PYZus{}idx} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{results}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+    \PY{n}{sdp}\PY{p}{,} \PY{n}{rp} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{max\PYZus{}sharpe\PYZus{}idx}\PY{p}{]}\PY{p}{,} \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{max\PYZus{}sharpe\PYZus{}idx}\PY{p}{]}
+    \PY{n}{max\PYZus{}sharpe\PYZus{}allocation} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{weights}\PY{p}{[}\PY{n}{max\PYZus{}sharpe\PYZus{}idx}\PY{p}{]}\PY{p}{,}\PY{n}{index}\PY{o}{=}\PY{n}{data}\PY{o}{.}\PY{n}{columns}\PY{p}{,}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{allocation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n}{max\PYZus{}sharpe\PYZus{}allocation}\PY{o}{.}\PY{n}{allocation} \PY{o}{=} \PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{n}{i}\PY{o}{*}\PY{l+m+mi}{100}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{max\PYZus{}sharpe\PYZus{}allocation}\PY{o}{.}\PY{n}{allocation}\PY{p}{]}
+    \PY{n}{max\PYZus{}sharpe\PYZus{}allocation} \PY{o}{=} \PY{n}{max\PYZus{}sharpe\PYZus{}allocation}\PY{o}{.}\PY{n}{T}
+    
+    \PY{n}{min\PYZus{}vol\PYZus{}idx} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{results}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+    \PY{n}{sdp\PYZus{}min}\PY{p}{,} \PY{n}{rp\PYZus{}min} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{min\PYZus{}vol\PYZus{}idx}\PY{p}{]}\PY{p}{,} \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{min\PYZus{}vol\PYZus{}idx}\PY{p}{]}
+    \PY{n}{min\PYZus{}vol\PYZus{}allocation} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{weights}\PY{p}{[}\PY{n}{min\PYZus{}vol\PYZus{}idx}\PY{p}{]}\PY{p}{,}\PY{n}{index}\PY{o}{=}\PY{n}{data}\PY{o}{.}\PY{n}{columns}\PY{p}{,}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{allocation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n}{min\PYZus{}vol\PYZus{}allocation}\PY{o}{.}\PY{n}{allocation} \PY{o}{=} \PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{n}{i}\PY{o}{*}\PY{l+m+mi}{100}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{min\PYZus{}vol\PYZus{}allocation}\PY{o}{.}\PY{n}{allocation}\PY{p}{]}
+    \PY{n}{min\PYZus{}vol\PYZus{}allocation} \PY{o}{=} \PY{n}{min\PYZus{}vol\PYZus{}allocation}\PY{o}{.}\PY{n}{T}
+
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{80}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maximum Sharpe Ratio Portfolio Allocation}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized Return:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{rp}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized Volatility:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{sdp}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{n}{max\PYZus{}sharpe\PYZus{}allocation}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{80}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Minimum Volatility Portfolio Allocation}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized Return:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{rp\PYZus{}min}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized Volatility:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{sdp\PYZus{}min}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{n}{min\PYZus{}vol\PYZus{}allocation}\PY{p}{)}    
+    
+    
+    \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mf}{5.6}\PY{p}{)}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{results}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{results}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{c}\PY{o}{=}\PY{n}{results}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{viridis}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{sdp}\PY{p}{,}\PY{n}{rp}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{s}\PY{o}{=}\PY{l+m+mi}{400}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Maximum Sharpe ratio}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{sdp\PYZus{}min}\PY{p}{,}\PY{n}{rp\PYZus{}min}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{s}\PY{o}{=}\PY{l+m+mi}{400}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Minimum volatility}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Simulated Portfolio Optimization based on Efficient Frontier}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Expected Volatility}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Expected Returns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{labelspacing}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}run the display function created above}
+\PY{n}{display\PYZus{}simulated\PYZus{}ef\PYZus{}with\PYZus{}random}\PY{p}{(}\PY{n}{mean\PYZus{}returns}\PY{p}{,} \PY{n}{cov\PYZus{}matrix}\PY{p}{,} \PY{n}{num\PYZus{}portfolios}\PY{p}{,} \PY{n}{risk\PYZus{}free\PYZus{}rate}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+--------------------------------------------------------------------------------
+Maximum Sharpe Ratio Portfolio Allocation
+
+Annualized Return: 0.3
+Annualized Volatility: 0.18
+
+
+             AAPL   AMZN  GOOGL     FB
+allocation  45.59  30.81   0.28  23.32
+--------------------------------------------------------------------------------
+Minimum Volatility Portfolio Allocation
+
+Annualized Return: 0.22
+Annualized Volatility: 0.16
+
+
+             AAPL  AMZN  GOOGL    FB
+allocation  36.09  1.42  56.07  6.42
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Since its introduction, MPT has been surpassed by many theories and
+models that correct some its flawed assumptions, account for more
+variables, and posses greater mathematical sophistication. However, it
+is difficult to argue against Markowitz's work as a landmark moment in
+quantitative finance. His work on MPT, although simple, opened the flood
+gates for what today has become a prominent player in the world of
+finance.
+
+We will very quickly look at one such quantitative model that leverages
+advances in mathematics: the Black-Scholes-Merton Model for options
+pricing.
+
+    \hypertarget{black-scholes-merton-model}{%
+\subsection{Black-Scholes-Merton
+Model}\label{black-scholes-merton-model}}
+
+\hypertarget{options-pricing}{%
+\subsubsection{Options Pricing}\label{options-pricing}}
+
+Previously we worked with stock information, however, not all securities
+operate in the same manner. \textbf{Options}, are contracts that grant
+the buyer either the right to buy (call) or sell (put) the underlying
+asset at a specific price on or before a certain date.
+
+Options are a method for investors to add flexibility to their
+portfolio. Options can create leverage, can be used as a hedge bet, and
+can even generate recurring income. The downside is that given the
+time-dependent nature of options trading, they can carry increased risk
+to the investor - thus prompting the creation of a mathematical model to
+more consistently predict options pricing.
+
+The BSM formula estimates the prices of call and put options, and was
+the first widely adopted mathematical formula to do so. Previously,
+options traders didn't possess a consistent mathematical way to value
+options, and empirical evidence has shown that price estimates produced
+by this formula are close to observed prices.
+
+The BSM model does this by solving the Partial-Differential-Equation
+below, which is derived from Stochastic Calculus and the modeling of
+Brownian Motion - in other words, it is an equation that seeks to model
+pseudo-random behavior.
+
+Myron Scholes and Robert Merton won the 1997 Nobel Prize in Economists.
+Fischer Black was named a contributor, since his passing rendered him
+ineligible to win the prize.
+
+    \hypertarget{bsm-formula}{%
+\subsubsection{BSM Formula:}\label{bsm-formula}}
+
+\$\frac{\partial \mathrm C}{ \partial \mathrm t } +
+\frac{1}{2}\sigma\^{}\{2\} \mathrm S\^{}\{2\}
+\frac{\partial^{2} \mathrm C}{\partial \mathrm C^2} + \mathrm r
+\mathrm S \frac{\partial \mathrm C}{\partial \mathrm S}~= \mathrm r
+\mathrm C \$
+
+\(\mathrm C(\mathrm S,\mathrm t)= \mathrm N(\mathrm d_1)\mathrm S_t - \mathrm N(\mathrm d_2) \mathrm K \mathrm e^{-rt}\)
+
+\begin{itemize}
+\tightlist
+\item
+  C = Call option price
+\item
+  S\(_t\) = Current stock price
+\item
+  K = Strike price of the option
+\item
+  r = Risk-free interest rate (a number between 0 and 1)
+\item
+  \(\sigma\) = Volatility of the stocks return (a number between 0 and
+  1)
+\item
+  t = Time to option maturity (in years)
+\item
+  N = normal cumulative distribution function
+\end{itemize}
+
+\(\mathrm d_1= \frac{1}{\sigma \sqrt{\mathrm t}} \left[\ln{\left(\frac{S}{K}\right)} + t\left(r + \frac{\sigma^2}{2} \right) \right]\)
+
+\(\mathrm d_2= \frac{1}{\sigma \sqrt{\mathrm t}} \left[\ln{\left(\frac{S}{K}\right)} + t\left(r - \frac{\sigma^2}{2} \right) \right]\)
+
+\(N(x)=\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{x} \mathrm e^{-\frac{1}{2}z^2} dz\)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{datetime} \PY{k+kn}{import} \PY{n}{datetime}
+\PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats} \PY{k+kn}{import} \PY{n}{norm}
+\PY{k+kn}{from} \PY{n+nn}{pandas} \PY{k+kn}{import} \PY{n}{DataFrame}
+\end{Verbatim}
+\end{tcolorbox}
+
+    In the next two cells we define \(d_1, d_2\), and the put/call functions
+of the BSM Model. These are exactly the equations above converted into a
+language python can use to compute.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{d1}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{K}\PY{p}{,}\PY{n}{T}\PY{p}{,}\PY{n}{r}\PY{p}{,}\PY{n}{sigma}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{S}\PY{o}{/}\PY{n}{K}\PY{p}{)}\PY{o}{+}\PY{p}{(}\PY{n}{r}\PY{o}{+}\PY{n}{sigma}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{/}\PY{l+m+mf}{2.}\PY{p}{)}\PY{o}{*}\PY{n}{T}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{sigma}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{T}\PY{p}{)}\PY{p}{)}
+\PY{k}{def} \PY{n+nf}{d2}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{K}\PY{p}{,}\PY{n}{T}\PY{p}{,}\PY{n}{r}\PY{p}{,}\PY{n}{sigma}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{d1}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{K}\PY{p}{,}\PY{n}{T}\PY{p}{,}\PY{n}{r}\PY{p}{,}\PY{n}{sigma}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{sigma}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{T}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{bs\PYZus{}call}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{K}\PY{p}{,}\PY{n}{T}\PY{p}{,}\PY{n}{r}\PY{p}{,}\PY{n}{sigma}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{S}\PY{o}{*}\PY{n}{norm}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{d1}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{K}\PY{p}{,}\PY{n}{T}\PY{p}{,}\PY{n}{r}\PY{p}{,}\PY{n}{sigma}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{K}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{r}\PY{o}{*}\PY{n}{T}\PY{p}{)}\PY{o}{*}\PY{n}{norm}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{d2}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{K}\PY{p}{,}\PY{n}{T}\PY{p}{,}\PY{n}{r}\PY{p}{,}\PY{n}{sigma}\PY{p}{)}\PY{p}{)}
+  
+\PY{k}{def} \PY{n+nf}{bs\PYZus{}put}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{K}\PY{p}{,}\PY{n}{T}\PY{p}{,}\PY{n}{r}\PY{p}{,}\PY{n}{sigma}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{K}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{r}\PY{o}{*}\PY{n}{T}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{S}\PY{o}{+}\PY{n}{bs\PYZus{}call}\PY{p}{(}\PY{n}{S}\PY{p}{,}\PY{n}{K}\PY{p}{,}\PY{n}{T}\PY{p}{,}\PY{n}{r}\PY{p}{,}\PY{n}{sigma}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    We are going to again use Datareader to build a dataframe to price
+Netflix stock options for an option that expires on December 18th, 2022.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{stock} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{NFLX}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{expiry} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{12\PYZhy{}18\PYZhy{}2022}\PY{l+s+s1}{\PYZsq{}}
+\PY{n}{strike\PYZus{}price} \PY{o}{=} \PY{l+m+mi}{370}
+
+\PY{c+c1}{\PYZsh{}set the start date as today}
+\PY{n}{today} \PY{o}{=} \PY{n}{datetime}\PY{o}{.}\PY{n}{now}\PY{p}{(}\PY{p}{)}
+\PY{n}{one\PYZus{}year\PYZus{}ago} \PY{o}{=} \PY{n}{today}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{n}{year}\PY{o}{=}\PY{n}{today}\PY{o}{.}\PY{n}{year}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}pull the stock data from yahoo}
+\PY{n}{df} \PY{o}{=} \PY{n}{web}\PY{o}{.}\PY{n}{DataReader}\PY{p}{(}\PY{n}{stock}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yahoo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{one\PYZus{}year\PYZus{}ago}\PY{p}{,} \PY{n}{today}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}sort by date and drop any NA values}
+\PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+\PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{assign}\PY{p}{(}\PY{n}{close\PYZus{}day\PYZus{}before}\PY{o}{=}\PY{n}{df}\PY{o}{.}\PY{n}{Close}\PY{o}{.}\PY{n}{shift}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{returns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{Close} \PY{o}{\PYZhy{}} \PY{n}{df}\PY{o}{.}\PY{n}{close\PYZus{}day\PYZus{}before}\PY{p}{)}\PY{o}{/}\PY{n}{df}\PY{o}{.}\PY{n}{close\PYZus{}day\PYZus{}before}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}compute the variance of the data}
+\PY{c+c1}{\PYZsh{}calculate the call price defined above}
+\PY{n}{sigma} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{252}\PY{p}{)} \PY{o}{*} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{returns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}
+\PY{n}{uty} \PY{o}{=} \PY{p}{(}\PY{n}{web}\PY{o}{.}\PY{n}{DataReader}\PY{p}{(}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZca{}TNX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yahoo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{today}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{n}{day}\PY{o}{=}\PY{n}{today}\PY{o}{.}\PY{n}{day}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{today}\PY{o}{.}\PY{n}{day}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Close}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{100}
+\PY{n}{lcp} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Close}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+\PY{n}{t} \PY{o}{=} \PY{p}{(}\PY{n}{datetime}\PY{o}{.}\PY{n}{strptime}\PY{p}{(}\PY{n}{expiry}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{m\PYZhy{}}\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{Y}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{datetime}\PY{o}{.}\PY{n}{utcnow}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{days} \PY{o}{/} \PY{l+m+mi}{365}
+
+\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The Option Price is: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{bs\PYZus{}call}\PY{p}{(}\PY{n}{lcp}\PY{p}{,} \PY{n}{strike\PYZus{}price}\PY{p}{,} \PY{n}{t}\PY{p}{,} \PY{n}{uty}\PY{p}{,} \PY{n}{sigma}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        ValueError                                Traceback (most recent call last)
+
+        <ipython-input-25-a330c56363cb> in <module>
+         15 sigma = np.sqrt(252) * df['returns'].std()
+         16 uty = (web.DataReader(
+    ---> 17     "\^{}TNX", 'yahoo', today.replace(day=today.day-1), today.day)['Close'].iloc[-1])/100
+         18 lcp = df['Close'].iloc[-1]
+         19 t = (datetime.strptime(expiry, "\%m-\%d-\%Y") - datetime.utcnow()).days / 365
+    
+
+        ValueError: day is out of range for month
+
+    \end{Verbatim}
+
+    The cell below builds BSM model functions to return the volatility of an
+option and applies it to the Netflix test stock.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{58}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Again, these are the same as the questions in the BSM intro, just translated into python}
+\PY{k}{def} \PY{n+nf}{call\PYZus{}implied\PYZus{}volatility}\PY{p}{(}\PY{n}{Price}\PY{p}{,} \PY{n}{S}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{T}\PY{p}{,} \PY{n}{r}\PY{p}{)}\PY{p}{:}
+    \PY{n}{sigma} \PY{o}{=} \PY{l+m+mf}{0.001}
+    \PY{k}{while} \PY{n}{sigma} \PY{o}{\PYZlt{}} \PY{l+m+mi}{1}\PY{p}{:}
+        \PY{n}{Price\PYZus{}implied} \PY{o}{=} \PY{n}{S} \PY{o}{*} \PYZbs{}
+            \PY{n}{norm}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{d1}\PY{p}{(}\PY{n}{S}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{T}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{sigma}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{K}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{r}\PY{o}{*}\PY{n}{T}\PY{p}{)} \PY{o}{*} \PYZbs{}
+            \PY{n}{norm}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{d2}\PY{p}{(}\PY{n}{S}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{T}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{sigma}\PY{p}{)}\PY{p}{)}
+        \PY{k}{if} \PY{n}{Price}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{Price\PYZus{}implied}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{0.001}\PY{p}{:}
+            \PY{k}{return} \PY{n}{sigma}
+        \PY{n}{sigma} \PY{o}{+}\PY{o}{=} \PY{l+m+mf}{0.001}
+    \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Not Found}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{k}{def} \PY{n+nf}{put\PYZus{}implied\PYZus{}volatility}\PY{p}{(}\PY{n}{Price}\PY{p}{,} \PY{n}{S}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{T}\PY{p}{,} \PY{n}{r}\PY{p}{)}\PY{p}{:}
+    \PY{n}{sigma} \PY{o}{=} \PY{l+m+mf}{0.001}
+    \PY{k}{while} \PY{n}{sigma} \PY{o}{\PYZlt{}} \PY{l+m+mi}{1}\PY{p}{:}
+        \PY{n}{Price\PYZus{}implied} \PY{o}{=} \PY{n}{K}\PY{o}{*}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{r}\PY{o}{*}\PY{n}{T}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{S}\PY{o}{+}\PY{n}{bs\PYZus{}call}\PY{p}{(}\PY{n}{S}\PY{p}{,} \PY{n}{K}\PY{p}{,} \PY{n}{T}\PY{p}{,} \PY{n}{r}\PY{p}{,} \PY{n}{sigma}\PY{p}{)}
+        \PY{k}{if} \PY{n}{Price}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{Price\PYZus{}implied}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mf}{0.001}\PY{p}{:}
+            \PY{k}{return} \PY{n}{sigma}
+        \PY{n}{sigma} \PY{o}{+}\PY{o}{=} \PY{l+m+mf}{0.001}
+    \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Not Found}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Implied Volatility: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+}
+      \PY{n+nb}{str}\PY{p}{(}\PY{l+m+mi}{100} \PY{o}{*} \PY{n}{call\PYZus{}implied\PYZus{}volatility}\PY{p}{(}\PY{n}{bs\PYZus{}call}\PY{p}{(}\PY{n}{lcp}\PY{p}{,} \PY{n}{strike\PYZus{}price}\PY{p}{,} \PY{n}{t}\PY{p}{,} \PY{n}{uty}\PY{p}{,} \PY{n}{sigma}\PY{p}{,}\PY{p}{)}\PY{p}{,} \PY{n}{lcp}\PY{p}{,} \PY{n}{strike\PYZus{}price}\PY{p}{,} \PY{n}{t}\PY{p}{,} \PY{n}{uty}\PY{p}{,}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        NameError                                 Traceback (most recent call last)
+
+        <ipython-input-58-b31d504cdc53> in <module>
+         20 
+         21 print("Implied Volatility: " +
+    ---> 22       str(100 * call\_implied\_volatility(bs\_call(lcp, strike\_price, t, uty, sigma,), lcp, strike\_price, t, uty,)) + " \%")
+    
+
+        NameError: name 'lcp' is not defined
+
+    \end{Verbatim}
+
+    Now we can apply to model to our 4 stocks from earlier.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{186}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{options} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{n}{volatility} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{k}{for} \PY{n}{symbol} \PY{o+ow}{in} \PY{n}{stocks}\PY{p}{:}
+    \PY{n}{df} \PY{o}{=} \PY{n}{web}\PY{o}{.}\PY{n}{DataReader}\PY{p}{(}\PY{n}{symbol}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yahoo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{one\PYZus{}year\PYZus{}ago}\PY{p}{,} \PY{n}{today}\PY{p}{)}
+    \PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Date}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+    \PY{n}{df} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{assign}\PY{p}{(}\PY{n}{close\PYZus{}day\PYZus{}before}\PY{o}{=}\PY{n}{df}\PY{o}{.}\PY{n}{Close}\PY{o}{.}\PY{n}{shift}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+    \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{returns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{Close} \PY{o}{\PYZhy{}} \PY{n}{df}\PY{o}{.}\PY{n}{close\PYZus{}day\PYZus{}before}\PY{p}{)}\PY{o}{/}\PY{n}{df}\PY{o}{.}\PY{n}{close\PYZus{}day\PYZus{}before}\PY{p}{)}
+    \PY{n}{sigma} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{252}\PY{p}{)} \PY{o}{*} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{returns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}
+    \PY{n}{uty} \PY{o}{=} \PY{p}{(}\PY{n}{web}\PY{o}{.}\PY{n}{DataReader}\PY{p}{(}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZca{}TNX}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yahoo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{today}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{n}{day}\PY{o}{=}\PY{n}{today}\PY{o}{.}\PY{n}{day}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{today}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Close}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{100}
+    \PY{n}{lcp} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Close}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+    \PY{n}{options}\PY{p}{[}\PY{n}{symbol}\PY{p}{]} \PY{o}{=} \PY{n}{bs\PYZus{}call}\PY{p}{(}\PY{n}{lcp}\PY{p}{,} \PY{n}{strike\PYZus{}price}\PY{p}{,} \PY{n}{t}\PY{p}{,} \PY{n}{uty}\PY{p}{,} \PY{n}{sigma}\PY{p}{)}
+    \PY{n}{volatility}\PY{p}{[}\PY{n}{symbol}\PY{p}{]} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{l+m+mi}{100} \PY{o}{*} \PY{n}{call\PYZus{}implied\PYZus{}volatility}\PY{p}{(}\PY{n}{bs\PYZus{}call}\PY{p}{(}\PY{n}{lcp}\PY{p}{,} \PY{n}{strike\PYZus{}price}\PY{p}{,} \PY{n}{t}\PY{p}{,} \PY{n}{uty}\PY{p}{,} \PY{n}{sigma}\PY{p}{,}\PY{p}{)}\PY{p}{,} \PY{n}{lcp}\PY{p}{,} \PY{n}{strike\PYZus{}price}\PY{p}{,} \PY{n}{t}\PY{p}{,} \PY{n}{uty}\PY{p}{,}\PY{p}{)}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}
+    
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Call Price:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{options}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+m+mi}{80}\PY{o}{*}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Implied Volatility:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{volatility}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{186}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\{'AAPL': 0.019248659480856134,
+ 'AMZN': 2939.292947751972,
+ 'GOOGL': 2421.36301611135,
+ 'FB': 32.23937616390607\}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Now that we appreciate the power of having a computer by our side when
+making investments, we understand how impactful an operating-scale
+quantum computer would be to any financial competitor.
+
+    \hypertarget{quantum-financial-optimization}{%
+\subsection{Quantum Financial
+Optimization}\label{quantum-financial-optimization}}
+
+Quantum computing is a world of high returns and high risks, which
+happen to be the specialty of investors and financial services.
+Ultimately, trading stocks and options is an arena defined by fierce
+competition where success is decided by a microsecond of difference.
+Above we used classical computing to wrangle 4 stocks with a total of
+2,000 original stock price data points, and we saw how difficult it is
+to predict the volatility of such a portfolio. Now imagine instead, of
+four stocks we are managing 400, and instead of analyzing stock prices
+by the day, we want to analyze them by the \emph{second}. It is easy to
+picture the benefits of having qubits at your disposal.
+
+A Quantum Computer is well suited to this task because above all,
+Quantum Computing excels at parallel computations - the exact tool
+needed to process millions of pseudo-random variable with billions of
+dollars on the line. In other words, to neglect the emergence of Quantum
+Finance would be to play basketball in Chuck Taylors while everyone else
+is playing in Air Jordans.
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+Below, we are going to write a Quantum Portfolio Optimization (QPO)
+algorithm you can run today using the Qiskit libraries. We are also
+going to compare this to a classical method to see if we are indeed
+generating useful results.
+
+To begin we will load in our needed packages and reload out stock data
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{44}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qiskit} \PY{k+kn}{import} \PY{n}{Aer}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{circuit}\PY{n+nn}{.}\PY{n+nn}{library} \PY{k+kn}{import} \PY{n}{TwoLocal}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{aqua} \PY{k+kn}{import} \PY{n}{QuantumInstance}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{finance}\PY{n+nn}{.}\PY{n+nn}{applications}\PY{n+nn}{.}\PY{n+nn}{ising} \PY{k+kn}{import} \PY{n}{portfolio}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{optimization}\PY{n+nn}{.}\PY{n+nn}{applications}\PY{n+nn}{.}\PY{n+nn}{ising}\PY{n+nn}{.}\PY{n+nn}{common} \PY{k+kn}{import} \PY{n}{sample\PYZus{}most\PYZus{}likely}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{finance}\PY{n+nn}{.}\PY{n+nn}{data\PYZus{}providers} \PY{k+kn}{import} \PY{n}{RandomDataProvider}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{aqua}\PY{n+nn}{.}\PY{n+nn}{algorithms} \PY{k+kn}{import} \PY{n}{VQE}\PY{p}{,} \PY{n}{NumPyMinimumEigensolver}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{aqua}\PY{n+nn}{.}\PY{n+nn}{components}\PY{n+nn}{.}\PY{n+nn}{optimizers} \PY{k+kn}{import} \PY{n}{COBYLA}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{121}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{data}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{121}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+                 AAPL        AMZN       GOOGL          FB
+Date
+2016-01-04  24.286827  636.989990  759.440002  102.220001
+2016-01-05  23.678217  633.789978  761.530029  102.730003
+2016-01-06  23.214846  632.650024  759.330017  102.970001
+2016-01-07  22.235069  607.940002  741.000000   97.919998
+2016-01-08  22.352644  607.049988  730.909973   97.330002
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{begin-qpo}{%
+\subsection{Begin QPO}\label{begin-qpo}}
+
+We want to solve the following mean-variance portfolio optimization
+problem for \(n\) assets:
+
+\(\begin{aligned} \min_{x \in \{0, 1\}^n} q x^T \Sigma x - \mu^T x\\ \text{subject to: } 1^T x = B \end{aligned}\)
+
+\begin{itemize}
+\tightlist
+\item
+  \(x \in \{0, 1\}^n\): Binary vector denoting chosing assets,
+\item
+  \(\mu \in \mathbb{R}^n\): Asset Expected Returns,
+\item
+  \(\Sigma \in \mathbb{R}^{n \times n}\): Asset Covariance,
+\item
+  \(q > 0\): Risk tolerance of the investor
+\item
+  \(B\): Budget, i.e.~the number of assets to be selected out of \(n\).
+\end{itemize}
+
+Such That: - the vector of portfolio weights is normalized (=1), - the
+full budget \(B\) has to be spent: we must choose exactly \(B\) assets.
+
+This problem is similar to the Sharpe Ratio in that it weights expected
+returns against volatility
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+We are going to use the Qiskit
+\href{https://qiskit.org/textbook/ch-applications/vqe-molecules.html\#varmethod}{Variational
+Quantum Eigensolver (VQE)} to optimize the same portfolio as before in
+the classical examples. In a nutshell, VQE uses the variational
+principle of quantum mechanics to find the minimum eigenvalue of a given
+operator.
+
+VQE is a great quantum algorithm to use because it excels at optimizing
+over search spaces with a large number of local minima. Avoiding local
+minima is an incredibly important ability for our algorithm since it is
+easy for simplistic optimizers to become `trapped' in these local minima
+and miss the true global minimum of the search space.
+
+Our portfolio space clearly contains multiple local minima and VQE is
+therfore well suited. It is not, however, the only choice of quantum
+optimizer. Quantum Approximate Optimization Algorithm (QAOA) is another
+quantum optimizer that would perform just as well, or better than VQE.
+In this notebook we choose VQE over QAOA because the mathematical theory
+of VQE is slightly simpler to conceptualize and has a more
+straightfoward connection to quantum mechanics than QAOA.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+In the case of a state described by a Hamiltonian H, VQE gives the
+ground state of the specified system.
+
+We can express the variational principle mathematically as:
+\(\lambda_{min} = \langle{H}\rangle_{\psi} = \left\langle \psi \middle| H \middle| \psi \right\rangle = \sum_{i=1}^{N} \lambda_{i}|\left\langle \psi_i \middle| \psi \right\rangle|^2\)
+
+Our operator will be built using the Qiskit\_Finance package and will
+convert the above mean-variance problem into an operator for which we
+can find the minimum eigenvalue and subsequently eigenvector which will
+be our optimum portfolio! It does this by modeling the problem as an
+Ising Hamiltonian. Although that subject is deserving of its own blog,
+just think of it as creating a Hamiltonian defined in binary terms
+(on/off, 0/1).
+
+    We next need to calculate the mean and covariance of our stock data.
+Thankfully, Pandas Dataframes has a built-in function we can call to
+calculate the mean price of each stock as well as the covariance matrix.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{122}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Retrieve the mean and covariance matrix of the data}
+\PY{n}{mu} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{sigma} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{cov}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{123}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MU:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{mu}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{80}\PY{o}{*}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SIGMA:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{sigma}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+MU:
+ AAPL      30.096189
+AMZN     833.578032
+GOOGL    851.317635
+FB       136.766720
+dtype: float64
+
+--------------------------------------------------------------------------------
+SIGMA:
+              AAPL          AMZN         GOOGL           FB
+AAPL    40.843960    995.007746    656.919568   147.323752
+AMZN   995.007746  28000.693276  16831.350250  3825.909816
+GOOGL  656.919568  16831.350250  11337.098379  2443.373784
+FB     147.323752   3825.909816   2443.373784   581.653846
+    \end{Verbatim}
+
+    Now we set the Risk Factor (q) of our investor, as well as the number of
+stocks (assets) we will optimize over. The number of assets is also the
+number of qubits initiated in the computation.
+
+Finally, we use the portfolio module of Qiskit\_Finance to generate our
+mean-variance operator, here represented by the variable \(Op\).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{45}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{q} \PY{o}{=} \PY{l+m+mf}{0.5}                  \PY{c+c1}{\PYZsh{} set risk factor}
+\PY{n}{budget} \PY{o}{=} \PY{n}{numAssets} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{2}  \PY{c+c1}{\PYZsh{} set budget \PYZhy{}\PYZhy{}\PYZgt{} numAssets = 4 is the same as defined in our Markowitz Model}
+\PY{n}{penalty} \PY{o}{=} \PY{n}{numAssets}      \PY{c+c1}{\PYZsh{} set parameter to scale the budget penalty term}
+
+\PY{c+c1}{\PYZsh{}Generate our Mean\PYZhy{}Variance Operator}
+\PY{n}{Op}\PY{p}{,} \PY{n}{offset} \PY{o}{=} \PY{n}{portfolio}\PY{o}{.}\PY{n}{get\PYZus{}operator}\PY{p}{(}\PY{n}{mu}\PY{p}{,} \PY{n}{sigma}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{budget}\PY{p}{,} \PY{n}{penalty}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    This cell is simply to organize the data for optimizations as well as
+print the final results in a way we can easily understand.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{92}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{index\PYZus{}to\PYZus{}selection}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{numAssets}\PY{p}{)}\PY{p}{:}
+    \PY{n}{s} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}0:b\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{o}{.}\PY{n}{rjust}\PY{p}{(}\PY{n}{numAssets}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1} \PY{k}{if} \PY{n}{s}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1}\PY{l+s+s1}{\PYZsq{}} \PY{k}{else} \PY{l+m+mi}{0} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{reversed}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{numAssets}\PY{p}{)}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{x}
+
+\PY{k}{def} \PY{n+nf}{print\PYZus{}result}\PY{p}{(}\PY{n}{result}\PY{p}{)}\PY{p}{:}
+    \PY{n}{selection} \PY{o}{=} \PY{n}{sample\PYZus{}most\PYZus{}likely}\PY{p}{(}\PY{n}{result}\PY{o}{.}\PY{n}{eigenstate}\PY{p}{)}
+    \PY{n}{value} \PY{o}{=} \PY{n}{portfolio}\PY{o}{.}\PY{n}{portfolio\PYZus{}value}\PY{p}{(}\PY{n}{selection}\PY{p}{,} \PY{n}{mu}\PY{p}{,} \PY{n}{sigma}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{budget}\PY{p}{,} \PY{n}{penalty}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Optimal: selection }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{, value }\PY{l+s+si}{\PYZob{}:.4f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{selection}\PY{p}{,} \PY{n}{value}\PY{p}{)}\PY{p}{)}
+    \PY{n}{eigenvector} \PY{o}{=} \PY{n}{result}\PY{o}{.}\PY{n}{eigenstate} \PY{k}{if} \PY{n+nb}{isinstance}\PY{p}{(}\PY{n}{result}\PY{o}{.}\PY{n}{eigenstate}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{ndarray}\PY{p}{)} \PY{k}{else} \PY{n}{result}\PY{o}{.}\PY{n}{eigenstate}\PY{o}{.}\PY{n}{to\PYZus{}matrix}\PY{p}{(}\PY{p}{)}
+    \PY{n}{probabilities} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{abs}\PY{p}{(}\PY{n}{eigenvector}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}
+    \PY{n}{i\PYZus{}sorted} \PY{o}{=} \PY{n+nb}{reversed}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{argsort}\PY{p}{(}\PY{n}{probabilities}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{} Full result \PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{selection}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{value}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{probability}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{i\PYZus{}sorted}\PY{p}{:}
+        \PY{n}{x} \PY{o}{=} \PY{n}{index\PYZus{}to\PYZus{}selection}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{numAssets}\PY{p}{)}
+        \PY{n}{value} \PY{o}{=} \PY{n}{portfolio}\PY{o}{.}\PY{n}{portfolio\PYZus{}value}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{mu}\PY{p}{,} \PY{n}{sigma}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{budget}\PY{p}{,} \PY{n}{penalty}\PY{p}{)}
+        \PY{n}{probability} \PY{o}{=} \PY{n}{probabilities}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}10s}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+si}{\PYZpc{}.4f}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+si}{\PYZpc{}.4f}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{value}\PY{p}{,} \PY{n}{probability}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Let's first run the classical NumPy minimum eigensolver function from
+Qiskit on our \(Op\) operator. This algorithm will run a classical
+search through viable eigenfunctions to minimize the eigenvalue.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{93}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Create our NumPyMinEigensolver}
+\PY{n}{classical\PYZus{}eigensolver} \PY{o}{=} \PY{n}{NumPyMinimumEigensolver}\PY{p}{(}\PY{n}{Op}\PY{p}{)}
+\PY{n}{classical\PYZus{}result} \PY{o}{=} \PY{n}{classical\PYZus{}eigensolver}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{}Use our pretty printing function}
+\PY{n}{print\PYZus{}result}\PY{p}{(}\PY{n}{classical\PYZus{}result}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Optimal: selection [1 0 0 0], value -5.6742
+
+----------------- Full result ---------------------
+selection       value           probability
+---------------------------------------------------
+ [1 0 0 0]      -5.6742         1.0000
+ [1 1 1 1]      43044.2711              0.0000
+ [0 1 1 1]      41242.6942              0.0000
+ [1 0 1 1]      8213.2347               0.0000
+ [0 0 1 1]      7414.6655               0.0000
+ [1 1 0 1]      18283.3959              0.0000
+ [0 1 0 1]      17146.7386              0.0000
+ [1 0 0 1]      291.7097                0.0000
+ [0 0 0 1]      158.0602                0.0000
+ [1 1 1 0]      36461.6035              0.0000
+ [0 1 1 0]      34815.3504              0.0000
+ [1 0 1 0]      5464.4769               0.0000
+ [0 0 1 0]      4821.2316               0.0000
+ [1 1 0 0]      14152.1021              0.0000
+ [0 1 0 0]      13170.7686              0.0000
+ [0 0 0 0]      16.0000         0.0000
+    \end{Verbatim}
+
+    Note that due to the simplicity of the model we are not choosing
+fractional weights for each stock in the portfolio, we are merely
+generating a binary decision vector, \(x \in \{0, 1\}^n\), where 1
+represents and investment and 0 does not. Also note that the `Value' in
+this case is the solution to the mean-variance problem we wished to
+minimize. Therefore, our results show that the optimal portfolio
+contains a single investment, AAPL.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{63}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Examining the value, expected value, and volatility (variance) of our optimal selection}
+
+\PY{n}{value} \PY{o}{=} \PY{n}{portfolio}\PY{o}{.}\PY{n}{portfolio\PYZus{}value}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{mu}\PY{p}{,} \PY{n}{cov\PYZus{}annual}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{budget}\PY{p}{,} \PY{n}{penalty}\PY{p}{)}
+\PY{n}{expected\PYZus{}value} \PY{o}{=} \PY{n}{portfolio}\PY{o}{.}\PY{n}{portfolio\PYZus{}expected\PYZus{}value}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{mu}\PY{p}{)}
+\PY{n}{volatility} \PY{o}{=} \PY{n}{portfolio}\PY{o}{.}\PY{n}{portfolio\PYZus{}variance}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{sigma}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Value:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{value}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+     \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Expected Value:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{expected\PYZus{}value}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+     \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Volatility:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{volatility}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Value: -5.67420918299846
+ Expected Value: 30.096189146250428
+ Volatility: 40.843959926503935
+    \end{Verbatim}
+
+    Let's now compare that to the results we get from using Qiskit's
+Variational Quantum Eigensolver.
+
+    \hypertarget{vqe}{%
+\subsection{VQE}\label{vqe}}
+
+Since we are running a quantum algorithm, we must utilize a Qiskit
+backend in order to simulate the effects of a quantum computer. There
+are different backends you can use other than Aer.
+
+VQE utilizes a classical optimizer to search through the possible
+eigenfunction trials states of the Hamiltonian. We will use the
+Constrained Optimization By Linear Approximation optimizer, or COBYLA,
+which is already built into Qiskit\_Finance.
+
+Next we set a random seed (in order to push the VQE towards the global
+minimum), intialize our qubits using the TwoLocal command (printed
+below), and use the VQE function to create our quantum instance for
+quantum simulation to run.
+
+Finally we run our VQE instance, optimize our portfolio on the Qiskit
+backend, and print our results!
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{131}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}Create the Qiskit backend in order to run our quantum experiment}
+\PY{n}{backend} \PY{o}{=} \PY{n}{Aer}\PY{o}{.}\PY{n}{get\PYZus{}backend}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{statevector\PYZus{}simulator}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}Set the random seed that will be used to randomize eigenvectors}
+\PY{n}{seed} \PY{o}{=} \PY{l+m+mi}{22}
+
+\PY{c+c1}{\PYZsh{}Cobyla is the classicla optimizer we will use in the VQE algo}
+\PY{n}{cobyla} \PY{o}{=} \PY{n}{COBYLA}\PY{p}{(}\PY{p}{)}
+\PY{n}{cobyla}\PY{o}{.}\PY{n}{set\PYZus{}options}\PY{p}{(}\PY{n}{maxiter}\PY{o}{=}\PY{l+m+mi}{500}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}TwoLocal initiates qubit entanglement}
+\PY{n}{ry} \PY{o}{=} \PY{n}{TwoLocal}\PY{p}{(}\PY{n}{Op}\PY{o}{.}\PY{n}{num\PYZus{}qubits}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ry}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cz}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{reps}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{entanglement}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{full}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{}The VQE function creates the VQE algorithm on our Qiskit backend}
+\PY{n}{vqe} \PY{o}{=} \PY{n}{VQE}\PY{p}{(}\PY{n}{Op}\PY{p}{,} \PY{n}{ry}\PY{p}{,} \PY{n}{cobyla}\PY{p}{)}
+\PY{n}{vqe}\PY{o}{.}\PY{n}{random\PYZus{}seed} \PY{o}{=} \PY{n}{seed}
+
+\PY{n}{quantum\PYZus{}instance} \PY{o}{=} \PY{n}{QuantumInstance}\PY{p}{(}\PY{n}{backend}\PY{o}{=}\PY{n}{backend}\PY{p}{,} \PY{n}{seed\PYZus{}simulator}\PY{o}{=}\PY{n}{seed}\PY{p}{,} \PY{n}{seed\PYZus{}transpiler}\PY{o}{=}\PY{n}{seed}\PY{p}{)}
+
+\PY{n}{result} \PY{o}{=} \PY{n}{vqe}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{n}{quantum\PYZus{}instance}\PY{p}{)}
+
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{What the TwoLocal Command does to entangle the Qubits used in the computation:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{ry}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{l+m+mi}{80}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{print\PYZus{}result}\PY{p}{(}\PY{n}{result}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+C:\textbackslash{}Users\textbackslash{}ascoh\textbackslash{}anaconda3\textbackslash{}lib\textbackslash{}site-packages\textbackslash{}qiskit\textbackslash{}utils\textbackslash{}deprecation.py:62:
+DeprecationWarning: Using a qobj for run() is deprecated as of qiskit-aer 0.9.0
+and will be removed no sooner than 3 months from that release date. Transpiled
+circuits should now be passed directly using `backend.run(circuits,
+**run\_options).
+  return func(*args, **kwargs)
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+What the TwoLocal Command does to entangle the Qubits used in the computation:
+     ┌──────────┐            ┌──────────┐                                 »
+q\_0: ┤ Ry(θ[0]) ├─■──■─────■─┤ Ry(θ[4]) ├─────────────────■───────■─────■─»
+     ├──────────┤ │  │     │ └──────────┘┌──────────┐     │       │     │ »
+q\_1: ┤ Ry(θ[1]) ├─■──┼──■──┼──────■──────┤ Ry(θ[5]) ├─────■───────┼──■──┼─»
+     ├──────────┤    │  │  │      │      └──────────┘┌──────────┐ │  │  │ »
+q\_2: ┤ Ry(θ[2]) ├────■──■──┼──────┼───────────■──────┤ Ry(θ[6]) ├─■──■──┼─»
+     ├──────────┤          │      │           │      ├──────────┤       │ »
+q\_3: ┤ Ry(θ[3]) ├──────────■──────■───────────■──────┤ Ry(θ[7]) ├───────■─»
+     └──────────┘                                    └──────────┘         »
+«     ┌──────────┐                                  ┌───────────┐             »
+«q\_0: ┤ Ry(θ[8]) ├──────────────────■───────■─────■─┤ Ry(θ[12]) ├─────────────»
+«     └──────────┘┌──────────┐      │       │     │ └───────────┘┌───────────┐»
+«q\_1: ─────■──────┤ Ry(θ[9]) ├──────■───────┼──■──┼───────■──────┤ Ry(θ[13]) ├»
+«          │      └──────────┘┌───────────┐ │  │  │       │      └───────────┘»
+«q\_2: ─────┼───────────■──────┤ Ry(θ[10]) ├─■──■──┼───────┼────────────■──────»
+«          │           │      ├───────────┤       │       │            │      »
+«q\_3: ─────■───────────■──────┤ Ry(θ[11]) ├───────■───────■────────────■──────»
+«                             └───────────┘                                   »
+«
+«q\_0: ─────────────
+«
+«q\_1: ─────────────
+«     ┌───────────┐
+«q\_2: ┤ Ry(θ[14]) ├
+«     ├───────────┤
+«q\_3: ┤ Ry(θ[15]) ├
+«     └───────────┘
+--------------------------------------------------------------------------------
+
+
+Optimal: selection [0. 0. 0. 1.], value 158.0602
+
+----------------- Full result ---------------------
+selection       value           probability
+---------------------------------------------------
+ [0 0 0 1]      158.0602                0.8500
+ [1 0 0 1]      291.7097                0.0953
+ [1 0 0 0]      -5.6742         0.0338
+ [0 0 0 0]      16.0000         0.0208
+ [1 1 0 0]      14152.1021              0.0000
+ [0 1 0 0]      13170.7686              0.0000
+ [1 0 1 1]      8213.2347               0.0000
+ [0 0 1 1]      7414.6655               0.0000
+ [0 0 1 0]      4821.2316               0.0000
+ [0 1 0 1]      17146.7386              0.0000
+ [1 1 1 1]      43044.2711              0.0000
+ [1 1 0 1]      18283.3959              0.0000
+ [0 1 1 1]      41242.6942              0.0000
+ [1 1 1 0]      36461.6035              0.0000
+ [0 1 1 0]      34815.3504              0.0000
+ [1 0 1 0]      5464.4769               0.0000
+    \end{Verbatim}
+
+    Ok cool, we just succesfully ran a Quantum Financial Optimization
+Algortithm! But\ldots{} what does this mean? Well, for one, quantum
+algorithms report \emph{probabilistic} rather than deterministic
+results. Thus, if we ran our optimization program on an actual quantum
+computer we would receive the above result only a fraction of the time
+(which is reported to the right of the vector values).
+
+We can visualize these results in order to but it in context of our
+Markowitz portfolio optimization. We begin by creating a vector contain
+(almost) all of the possible selection vectors. I have removed {[}0 0 0
+0{]} and {[}1 1 1 1{]} because they skew the comparison dramatically.
+The scatter plot below plots the Expected Returns vs Expected Volatility
+of each selection. Notice that we re-use the returns\_annual and
+cov\_annual variable from the Markowitz model. We do this specifically
+because we want the returns and volatility in daily percentages. You can
+see how in our simplified model, volatility scales with expected returns
+- thus highlighting the benefit of portfolio diversification.
+
+Finally, we plot our VQE selections against our Markowitz search space.
+Although the VQE results produce a portfolio with a worse Sharpe Ratio
+than the optimal portfolio produced by the Markowitz model, our VQE
+model produced comparabale results with a search space of 16 portfolios
+compared to the 50,000 searched in our Markowitz model!
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{146}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{vec} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+       \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} 
+       \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} 
+       \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} 
+       \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+       \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+       \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+       \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+       \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+       \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+       \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+       \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+       \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+       \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{150}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{vec}\PY{p}{:}
+        \PY{n}{expected\PYZus{}value} \PY{o}{=} \PY{n}{portfolio}\PY{o}{.}\PY{n}{portfolio\PYZus{}expected\PYZus{}value}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{returns\PYZus{}annual}\PY{p}{)}
+        \PY{n}{volatility} \PY{o}{=} \PY{n}{portfolio}\PY{o}{.}\PY{n}{portfolio\PYZus{}variance}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{cov\PYZus{}annual}\PY{p}{)}
+        \PY{n}{sct} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Vec}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{x}\PY{p}{,}
+               \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EV}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{expected\PYZus{}value}\PY{p}{,}
+              \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Vol}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{volatility}\PY{p}{\PYZcb{}}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{expected\PYZus{}value}\PY{p}{,} \PY{n}{volatility}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{,} \PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_54_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{151}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{display\PYZus{}simulated\PYZus{}ef\PYZus{}with\PYZus{}random}\PY{p}{(}\PY{n}{mean\PYZus{}returns}\PY{p}{,} \PY{n}{cov\PYZus{}matrix}\PY{p}{,} \PY{n}{num\PYZus{}portfolios}\PY{p}{,} \PY{n}{risk\PYZus{}free\PYZus{}rate}\PY{p}{)}\PY{p}{:}
+    \PY{n}{results}\PY{p}{,} \PY{n}{weights} \PY{o}{=} \PY{n}{random\PYZus{}portfolios}\PY{p}{(}\PY{n}{num\PYZus{}portfolios}\PY{p}{,}\PY{n}{mean\PYZus{}returns}\PY{p}{,} \PY{n}{cov\PYZus{}matrix}\PY{p}{,} \PY{n}{risk\PYZus{}free\PYZus{}rate}\PY{p}{)}
+    
+    \PY{n}{max\PYZus{}sharpe\PYZus{}idx} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{results}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+    \PY{n}{sdp}\PY{p}{,} \PY{n}{rp} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{max\PYZus{}sharpe\PYZus{}idx}\PY{p}{]}\PY{p}{,} \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{max\PYZus{}sharpe\PYZus{}idx}\PY{p}{]}
+    \PY{n}{max\PYZus{}sharpe\PYZus{}allocation} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{weights}\PY{p}{[}\PY{n}{max\PYZus{}sharpe\PYZus{}idx}\PY{p}{]}\PY{p}{,}\PY{n}{index}\PY{o}{=}\PY{n}{data}\PY{o}{.}\PY{n}{columns}\PY{p}{,}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{allocation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n}{max\PYZus{}sharpe\PYZus{}allocation}\PY{o}{.}\PY{n}{allocation} \PY{o}{=} \PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{n}{i}\PY{o}{*}\PY{l+m+mi}{100}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{max\PYZus{}sharpe\PYZus{}allocation}\PY{o}{.}\PY{n}{allocation}\PY{p}{]}
+    \PY{n}{max\PYZus{}sharpe\PYZus{}allocation} \PY{o}{=} \PY{n}{max\PYZus{}sharpe\PYZus{}allocation}\PY{o}{.}\PY{n}{T}
+    
+    \PY{n}{min\PYZus{}vol\PYZus{}idx} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmin}\PY{p}{(}\PY{n}{results}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+    \PY{n}{sdp\PYZus{}min}\PY{p}{,} \PY{n}{rp\PYZus{}min} \PY{o}{=} \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{min\PYZus{}vol\PYZus{}idx}\PY{p}{]}\PY{p}{,} \PY{n}{results}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{min\PYZus{}vol\PYZus{}idx}\PY{p}{]}
+    \PY{n}{min\PYZus{}vol\PYZus{}allocation} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{weights}\PY{p}{[}\PY{n}{min\PYZus{}vol\PYZus{}idx}\PY{p}{]}\PY{p}{,}\PY{n}{index}\PY{o}{=}\PY{n}{data}\PY{o}{.}\PY{n}{columns}\PY{p}{,}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{allocation}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n}{min\PYZus{}vol\PYZus{}allocation}\PY{o}{.}\PY{n}{allocation} \PY{o}{=} \PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{n}{i}\PY{o}{*}\PY{l+m+mi}{100}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{min\PYZus{}vol\PYZus{}allocation}\PY{o}{.}\PY{n}{allocation}\PY{p}{]}
+    \PY{n}{min\PYZus{}vol\PYZus{}allocation} \PY{o}{=} \PY{n}{min\PYZus{}vol\PYZus{}allocation}\PY{o}{.}\PY{n}{T}
+
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{80}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Maximum Sharpe Ratio Portfolio Allocation}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized Return:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{rp}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized Volatility:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{sdp}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{n}{max\PYZus{}sharpe\PYZus{}allocation}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{*}\PY{l+m+mi}{80}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Minimum Volatility Portfolio Allocation}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized Return:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{rp\PYZus{}min}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Annualized Volatility:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{sdp\PYZus{}min}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n+nb}{print} \PY{p}{(}\PY{n}{min\PYZus{}vol\PYZus{}allocation}\PY{p}{)}    
+    
+    
+    \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mf}{5.6}\PY{p}{)}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{results}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{results}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{c}\PY{o}{=}\PY{n}{results}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{viridis}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{sdp}\PY{p}{,}\PY{n}{rp}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{s}\PY{o}{=}\PY{l+m+mi}{400}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Maximum Sharpe ratio}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{sdp\PYZus{}min}\PY{p}{,}\PY{n}{rp\PYZus{}min}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{s}\PY{o}{=}\PY{l+m+mi}{400}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Minimum volatility}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{vec}\PY{p}{:}
+        \PY{n}{expected\PYZus{}value} \PY{o}{=} \PY{p}{(}\PY{n}{portfolio}\PY{o}{.}\PY{n}{portfolio\PYZus{}expected\PYZus{}value}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{returns\PYZus{}annual}\PY{p}{)}\PY{p}{)}
+        \PY{n}{volatility} \PY{o}{=} \PY{p}{(}\PY{n}{portfolio}\PY{o}{.}\PY{n}{portfolio\PYZus{}variance}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{cov\PYZus{}annual}\PY{p}{)}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{expected\PYZus{}value}\PY{p}{,} \PY{n}{volatility}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{ev\PYZus{}result} \PY{o}{=} \PY{n}{portfolio}\PY{o}{.}\PY{n}{portfolio\PYZus{}expected\PYZus{}value}\PY{p}{(}\PY{n}{sample\PYZus{}most\PYZus{}likely}\PY{p}{(}\PY{n}{result}\PY{o}{.}\PY{n}{eigenstate}\PY{p}{)}\PY{p}{,} \PY{n}{returns\PYZus{}annual}\PY{p}{)}
+    \PY{n}{vol\PYZus{}result} \PY{o}{=} \PY{n}{portfolio}\PY{o}{.}\PY{n}{portfolio\PYZus{}variance}\PY{p}{(}\PY{n}{sample\PYZus{}most\PYZus{}likely}\PY{p}{(}\PY{n}{result}\PY{o}{.}\PY{n}{eigenstate}\PY{p}{)}\PY{p}{,} \PY{n}{cov\PYZus{}annual}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{ev\PYZus{}result}\PY{p}{,}\PY{n}{vol\PYZus{}result}\PY{p}{,}\PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{s}\PY{o}{=}\PY{l+m+mi}{400}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Optimal VQE}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Simulated Portfolio Optimization based on Efficient Frontier}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Expected Volatility}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Expected Returns}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{labelspacing}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{152}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{display\PYZus{}simulated\PYZus{}ef\PYZus{}with\PYZus{}random}\PY{p}{(}\PY{n}{mean\PYZus{}returns}\PY{p}{,} \PY{n}{cov\PYZus{}matrix}\PY{p}{,} \PY{n}{num\PYZus{}portfolios}\PY{p}{,} \PY{n}{risk\PYZus{}free\PYZus{}rate}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+--------------------------------------------------------------------------------
+Maximum Sharpe Ratio Portfolio Allocation
+
+Annualized Return: 0.3
+Annualized Volatility: 0.18
+
+
+             AAPL   AMZN  GOOGL     FB
+allocation  46.23  30.17   0.04  23.56
+--------------------------------------------------------------------------------
+Minimum Volatility Portfolio Allocation
+
+Annualized Return: 0.22
+Annualized Volatility: 0.16
+
+
+            AAPL  AMZN  GOOGL    FB
+allocation  34.2  0.84  59.04  5.93
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_56_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    On the trading floor, computed variables increase exponentially and
+likewise need to be met with exponential computing power - precisely
+what Quantum Computing promises to deliver.
+
+Often, while mired in the complex problems of the present, it is easy to
+lose sight of Quantum Computing's future. However, Quantum Finance is
+one area where real, market-altering change is occurring overnight. Just
+as banks are preparing themselves to play a new, distinctly Quantum
+game, everyone invested in Quantum Computing should prepare for the day
+qubits dominate Wall Street.
+
+    \hypertarget{using-terra}{%
+\section{Using Terra}\label{using-terra}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{43}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qiskit} \PY{k+kn}{import} \PY{n}{Aer}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{algorithms} \PY{k+kn}{import} \PY{n}{VQE}\PY{p}{,} \PY{n}{QAOA}\PY{p}{,} \PY{n}{NumPyMinimumEigensolver}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{algorithms}\PY{n+nn}{.}\PY{n+nn}{optimizers} \PY{k+kn}{import} \PY{n}{COBYLA}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{circuit}\PY{n+nn}{.}\PY{n+nn}{library} \PY{k+kn}{import} \PY{n}{TwoLocal}
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{utils} \PY{k+kn}{import} \PY{n}{QuantumInstance}
+\PY{k+kn}{from} \PY{n+nn}{qiskit\PYZus{}finance}\PY{n+nn}{.}\PY{n+nn}{applications}\PY{n+nn}{.}\PY{n+nn}{optimization} \PY{k+kn}{import} \PY{n}{PortfolioOptimization}
+\PY{k+kn}{from} \PY{n+nn}{qiskit\PYZus{}finance}\PY{n+nn}{.}\PY{n+nn}{data\PYZus{}providers} \PY{k+kn}{import} \PY{n}{RandomDataProvider}
+\PY{k+kn}{from} \PY{n+nn}{qiskit\PYZus{}optimization}\PY{n+nn}{.}\PY{n+nn}{algorithms} \PY{k+kn}{import} \PY{n}{MinimumEigenOptimizer}
+\PY{k+kn}{from} \PY{n+nn}{qiskit\PYZus{}optimization}\PY{n+nn}{.}\PY{n+nn}{applications} \PY{k+kn}{import} \PY{n}{OptimizationApplication}
+\PY{k+kn}{from} \PY{n+nn}{qiskit\PYZus{}optimization}\PY{n+nn}{.}\PY{n+nn}{converters} \PY{k+kn}{import} \PY{n}{QuadraticProgramToQubo}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        ModuleNotFoundError                       Traceback (most recent call last)
+
+        <ipython-input-43-697073fc3cdb> in <module>
+          4 from qiskit.circuit.library import TwoLocal
+          5 from qiskit.utils import QuantumInstance
+    ----> 6 from qiskit\_finance.applications.optimization import PortfolioOptimization
+          7 from qiskit\_finance.data\_providers import RandomDataProvider
+          8 from qiskit\_optimization.algorithms import MinimumEigenOptimizer
+    
+
+        ModuleNotFoundError: No module named 'qiskit\_finance'
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{q} \PY{o}{=} \PY{l+m+mf}{0.5}                   \PY{c+c1}{\PYZsh{} set risk factor}
+\PY{n}{budget} \PY{o}{=} \PY{n}{numAssets} \PY{o}{/}\PY{o}{/} \PY{l+m+mi}{2}  \PY{c+c1}{\PYZsh{} set budget}
+\PY{n}{penalty} \PY{o}{=} \PY{n}{numAssets}      \PY{c+c1}{\PYZsh{} set parameter to scale the budget penalty term}
+
+\PY{n}{portfolio} \PY{o}{=} \PY{n}{PortfolioOptimization}\PY{p}{(}\PY{n}{expected\PYZus{}returns}\PY{o}{=}\PY{n}{mu}\PY{p}{,} 
+                                  \PY{n}{covariances}\PY{o}{=}\PY{n}{sigma}\PY{p}{,} 
+                                  \PY{n}{risk\PYZus{}factor}\PY{o}{=}\PY{n}{q}\PY{p}{,} 
+                                  \PY{n}{budget}\PY{o}{=}\PY{n}{budget}\PY{p}{,} 
+                                  \PY{n}{penalty}\PY{o}{=}\PY{n}{penalty}\PY{p}{)}
+\PY{n}{Op} \PY{o}{=} \PY{n}{portfolio}\PY{o}{.}\PY{n}{to\PYZus{}quadratic\PYZus{}program}\PY{p}{(}\PY{p}{)}
+\PY{n}{Op}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{classical\PYZus{}mes} \PY{o}{=} \PY{n}{NumPyMinimumEigensolver}\PY{p}{(}\PY{p}{)}
+\PY{n}{exact\PYZus{}eigensolver} \PY{o}{=} \PY{n}{MinimumEigenOptimizer}\PY{p}{(}\PY{n}{classical\PYZus{}eigensolver}\PY{p}{)}
+
+\PY{n}{classical\PYZus{}result} \PY{o}{=} \PY{n}{exact\PYZus{}eigensolver}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{Op}\PY{p}{)}
+
+\PY{n}{print\PYZus{}result}\PY{p}{(}\PY{n}{classical\PYZus{}result}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        NameError                                 Traceback (most recent call last)
+
+        /tmp/ipykernel\_128/271271271.py in <module>
+          1 classical\_mes = NumPyMinimumEigensolver()
+    ----> 2 exact\_eigensolver = MinimumEigenOptimizer(classical\_eigensolver)
+          3 
+          4 classical\_result = exact\_eigensolver.solve(Op)
+          5 
+    
+
+        NameError: name 'MinimumEigenOptimizer' is not defined
+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{qiskit}\PY{n+nn}{.}\PY{n+nn}{utils} \PY{k+kn}{import} \PY{n}{algorithm\PYZus{}globals}
+
+\PY{n}{algorithm\PYZus{}globals}\PY{o}{.}\PY{n}{random\PYZus{}seed} \PY{o}{=} \PY{l+m+mi}{2222}
+\PY{n}{backend} \PY{o}{=} \PY{n}{Aer}\PY{o}{.}\PY{n}{get\PYZus{}backend}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{statevector\PYZus{}simulator}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{cobyla} \PY{o}{=} \PY{n}{COBYLA}\PY{p}{(}\PY{p}{)}
+\PY{n}{cobyla}\PY{o}{.}\PY{n}{set\PYZus{}options}\PY{p}{(}\PY{n}{maxiter}\PY{o}{=}\PY{l+m+mi}{500}\PY{p}{)}
+\PY{n}{ry} \PY{o}{=} \PY{n}{TwoLocal}\PY{p}{(}\PY{n}{num\PYZus{}assets}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ry}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cz}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{reps}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{entanglement}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{full}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{quantum\PYZus{}instance} \PY{o}{=} \PY{n}{QuantumInstance}\PY{p}{(}\PY{n}{backend}\PY{o}{=}\PY{n}{backend}\PY{p}{,} \PY{n}{seed\PYZus{}simulator}\PY{o}{=}\PY{n}{seed}\PY{p}{,} \PY{n}{seed\PYZus{}transpiler}\PY{o}{=}\PY{n}{seed}\PY{p}{)}
+\PY{n}{vqe\PYZus{}mes} \PY{o}{=} \PY{n}{VQE}\PY{p}{(}\PY{n}{ry}\PY{p}{,} \PY{n}{optimizer}\PY{o}{=}\PY{n}{cobyla}\PY{p}{,} \PY{n}{quantum\PYZus{}instance}\PY{o}{=}\PY{n}{quantum\PYZus{}instance}\PY{p}{)}
+\PY{n}{vqe} \PY{o}{=} \PY{n}{MinimumEigenOptimizer}\PY{p}{(}\PY{n}{vqe\PYZus{}mes}\PY{p}{)}
+\PY{n}{vqe\PYZus{}result} \PY{o}{=} \PY{n}{vqe}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{Op}\PY{p}{)}
+
+\PY{n}{print\PYZus{}result}\PY{p}{(}\PY{n}{vqe\PYZus{}result}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
